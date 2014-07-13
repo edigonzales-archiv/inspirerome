@@ -39,7 +39,9 @@ public class FeedWriter2 {
         ArrayList links = new ArrayList();
 
         Link link = new Link();
-        link.setHref("http://csw.bgr.de/deegree-webservices/services?service=CSW&request=GetRecordById&version=2.0.2&ElementSetName=full&outputFormat=application/xml&outputSchema=http://www.isotc211.org/2005/gmd&Id=http://www.bgr.de/app/Produktblatt/show.php?productid=DE-SV-0997");
+        // Zeigt auf geocat.ch CSW: Amtliche Vermessung Liegenschaften Schweiz.
+        // Die Daten liegen im ITF komplett vor. Im CSW sind sie einzeln? Wie löst man das?
+        link.setHref("http://www.geocat.ch/geonetwork/srv/ger/csw?service=CSW&request=GetRecordById&version=2.0.2&ElementSetName=full&outputFormat=application/xml&outputSchema=http://www.isotc211.org/2005/gmd&Id=ab7a03e2-4bdd-4a49-bd92-4b0028bfcd51");
         links.add(link);
         
         link = new Link();
