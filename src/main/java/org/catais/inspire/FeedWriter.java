@@ -1,5 +1,6 @@
 package org.catais.inspire;
 
+import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
@@ -22,7 +23,9 @@ public class FeedWriter {
 		SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("atom_1.0");
         
-        feed.setTitle("Sample Feed (created with ROME)");
+        feed.setTitle("INSPIRE Download Service (predefined ATOM) für Geodaten des Kantons Solothurn");
+        feed.setDescription("setDescription setzt einen Subtitle?!");
+
         
         ArrayList links = new ArrayList();
 
@@ -41,7 +44,6 @@ public class FeedWriter {
         
 
         
-        feed.setDescription("This feed has been created using ROME (Java syndication utilities");
         
         
         

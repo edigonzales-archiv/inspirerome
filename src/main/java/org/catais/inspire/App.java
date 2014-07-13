@@ -13,7 +13,8 @@ public class App
     public static void main( String[] args )
     {
     	try {
-        	FeedWriter feedWriter = new FeedWriter();
+//        	FeedWriter feedWriter = new FeedWriter();
+        	FeedWriter2 feedWriter = new FeedWriter2();
     	} catch (FeedException e) {
     		e.printStackTrace();
     	} catch (IOException e) {
