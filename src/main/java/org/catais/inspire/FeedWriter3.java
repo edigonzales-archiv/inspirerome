@@ -83,9 +83,6 @@ public class FeedWriter3 {
 
 	    atomFeed.setRights("Kategorie A. Bla bla Nutzungsbedingungen..."); // rights or restrictions
 	    
-	    Content info = new Content();
-	    info.setValue("Ich bin Info.");
-	    atomFeed.setInfo(info);
 	    
 	    
         Document atomXml = new Atom10Generator().generate(atomFeed);
