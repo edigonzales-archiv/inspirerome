@@ -14,7 +14,7 @@ public class App
     {
     	try {
 //        	FeedWriter feedWriter = new FeedWriter();
-        	FeedWriter2 feedWriter = new FeedWriter2();
+        	FeedWriter3 feedWriter = new FeedWriter3();
     	} catch (FeedException e) {
     		e.printStackTrace();
     	} catch (IOException e) {
