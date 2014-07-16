@@ -1,5 +1,6 @@
 package org.catais.inspire;
 
+import com.sun.syndication.feed.atom.Category;
 import com.sun.syndication.feed.atom.Entry;
 import com.sun.syndication.feed.atom.Feed;
 import com.sun.syndication.feed.atom.Content;
@@ -9,6 +10,9 @@ import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.module.georss.GeoRSSModule;
 import com.sun.syndication.feed.module.georss.SimpleModuleImpl;
 import com.sun.syndication.feed.module.georss.geometries.Envelope;
+import com.sun.syndication.feed.module.georss.geometries.LinearRing;
+import com.sun.syndication.feed.module.georss.geometries.Polygon;
+import com.sun.syndication.feed.module.georss.geometries.PositionList;
 import com.sun.syndication.feed.synd.SyndLink;
 import com.sun.syndication.feed.synd.SyndLinkImpl;
 import com.sun.syndication.io.FeedException;
@@ -45,8 +49,7 @@ public class FeedWriter3 {
         Link link = new Link();
         link.setRel("describedby");
         link.setHreflang("de");
-        // Zeigt auf geocat.ch CSW: Amtliche Vermessung Liegenschaften Schweiz.
-        // Die Daten liegen im ITF komplett vor. Im CSW sind sie einzeln? Wie löst man das?
+        // Ah, nicht Metadaten des Datensatzes sondern "service metadata record" des Service... Geilo!
         link.setHref("http://www.geocat.ch/geonetwork/srv/ger/csw?service=CSW&request=GetRecordById&version=2.0.2&ElementSetName=full&outputFormat=application/xml&outputSchema=http://www.isotc211.org/2005/gmd&Id=ab7a03e2-4bdd-4a49-bd92-4b0028bfcd51");
         links.add(link);
 
@@ -71,7 +74,7 @@ public class FeedWriter3 {
 
         atomFeed.setOtherLinks(links);
         
-	    atomFeed.setUpdated(new Date()); // last update (of feed???? sagt TG Req 24 -> nur logisch falls fedd == data interpretiert wird)
+	    atomFeed.setUpdated(new Date()); // last update (of feed????)
 	    
 	    Person author = new Person();
 	    author.setName("Amt für Geoinformation Kanton Solothurn");
@@ -81,10 +84,109 @@ public class FeedWriter3 {
         
 	    atomFeed.setId("http://www.catais.org/atomfeeds/data_"+uuid_dummy+".xml"); // http uri zu sich selber
 
-	    atomFeed.setRights("Kategorie A. Bla bla Nutzungsbedingungen..."); // rights or restrictions
+	    atomFeed.setRights("Bla bla Nutzungsbedingungen..."); // rights or restrictions
 	    
+	    // Entry
 	    
+	    ArrayList entries = new ArrayList();
+	    {
+	    	Entry atomEntry = new Entry();
+	    	atomEntry.setTitle("Amtliche Vermessung der Gemeinde XXXXX (BfS-Nr.) Kanton Solothurn (INTERLIS XML) - EPSG:21781");       
+	    	atomEntry.setUpdated(new Date()); // last update (of feed entry???? nicht Daten???)
+	  
+	    	ArrayList linksEntry = new ArrayList();
+	    	
+	    	Link linkDataSet = new Link();
+	    	linkDataSet.setRel("alternate");
+	    	linkDataSet.setHreflang("de");
+	    	linkDataSet.setType("application/xml");
+	    	linkDataSet.setLength(999999);
+	    	linkDataSet.setTitle("Amtliche Vermessung der Gemeinde XXXXX (BfS-Nr.) Kanton Solothurn (INTERLIS XML) - EPSG:21781");
+	    	linkDataSet.setHref("http://www.catais.org/geodaten/ch/so/kva/av/dm01avch24d/itf/lv03/ch_260100.zip");	    	
+		    linksEntry.add(linkDataSet);
+
+	    	Link linkMetadata = new Link();
+	    	linkMetadata.setRel("describedby");
+	    	linkMetadata.setHreflang("de");
+	        // Zeigt auf geocat.ch CSW: Amtliche Vermessung Liegenschaften Schweiz.
+	        // Die Daten liegen im ITF komplett vor. Im CSW sind sie einzeln? Wie löst man das?
+		    linkMetadata.setHref("http://www.geocat.ch/geonetwork/srv/ger/csw?service=CSW&request=GetRecordById&version=2.0.2&ElementSetName=full&outputFormat=application/xml&outputSchema=http://www.isotc211.org/2005/gmd&Id=ab7a03e2-4bdd-4a49-bd92-4b0028bfcd51");
+		    linksEntry.add(linkMetadata);
+		    
+		    atomEntry.setOtherLinks(linksEntry);
+		    
+		    atomEntry.setId("http://www.catais.org/geodaten/ch/so/kva/av/dm01avch24d/itf/lv03/ch_260100.zip");
+		    
+		    Category category = new Category();
+		    category.setTerm("http://www.opengis.net/def/crs/EPSG/0/21781");
+		    category.setLabel("EPSG 21781");
+		    
+		    atomEntry.setCategories(Arrays.asList(category));
+
+		    entries.add(atomEntry);
+	    }
 	    
+	    {
+	    	Entry atomEntry = new Entry();
+	    	atomEntry.setTitle("Amtliche Vermessung der Gemeinde XXXXX (BfS-Nr.) Kanton Solothurn (INTERLIS XML) - EPSG:2056");       
+	    	atomEntry.setUpdated(new Date()); // last update (of feed entry???? nicht Daten???)
+	  
+	    	ArrayList linksEntry = new ArrayList();
+	    	
+	    	Link linkDataSet = new Link();
+	    	linkDataSet.setRel("alternate");
+	    	linkDataSet.setHreflang("de");
+	    	linkDataSet.setType("application/xml");
+	    	linkDataSet.setLength(999999); // Grösse in octets = byte
+	    	linkDataSet.setTitle("Amtliche Vermessung der Gemeinde XXXXX (BfS-Nr.) Kanton Solothurn (INTERLIS XML) - EPSG:2056");
+	    	linkDataSet.setHref("http://www.catais.org/geodaten/ch/so/kva/av/dm01avch24d/itf/lv95/ch_260100.zip");	    	
+		    linksEntry.add(linkDataSet);
+
+	    	Link linkMetadata = new Link();
+	    	linkMetadata.setRel("describedby");
+	    	linkMetadata.setHreflang("de");
+	        // Zeigt auf geocat.ch CSW: Amtliche Vermessung Liegenschaften Schweiz.
+	        // Die Daten liegen im ITF komplett vor. Im CSW sind sie einzeln? Wie löst man das?
+		    linkMetadata.setHref("http://www.geocat.ch/geonetwork/srv/ger/csw?service=CSW&request=GetRecordById&version=2.0.2&ElementSetName=full&outputFormat=application/xml&outputSchema=http://www.isotc211.org/2005/gmd&Id=ab7a03e2-4bdd-4a49-bd92-4b0028bfcd51");
+		    linksEntry.add(linkMetadata);
+		    
+		    atomEntry.setOtherLinks(linksEntry);
+		    
+		    atomEntry.setId("http://www.catais.org/geodaten/ch/so/kva/av/dm01avch24d/itf/lv95/ch_260100.zip");
+		    
+		    Category category = new Category();
+		    category.setTerm("http://www.opengis.net/def/crs/EPSG/0/2056");
+		    category.setLabel("EPSG 2056");
+		    
+		    atomEntry.setCategories(Arrays.asList(category));
+
+	        GeoRSSModule geoRssModule = new SimpleModuleImpl();
+	        
+	        // Falls georss:box doch wider erwarten (siehe TG) unterstützt wird von verschiedenen Clients
+	        // -> box verwenden. Das kann man einfacher mit .setGeometry(new Envelope(....) machen.
+	        PositionList posList = new PositionList();
+	        posList.add(10, 10);
+	        posList.add(11, 11);
+	        posList.add(11, 12);
+	        posList.add(11, 13);
+	        posList.add(10, 10);
+	        
+	        LinearRing linearRing = new LinearRing();
+	        linearRing.setPositionList(posList);
+	        Polygon polygon = new Polygon();
+	        polygon.setExterior(linearRing);
+	        
+	        geoRssModule.setGeometry(polygon);
+
+	        List<Module> modules = new ArrayList<Module>();
+	        modules.add(geoRssModule);
+	        atomEntry.setModules(modules);
+	        
+		    entries.add(atomEntry);
+	    }
+
+    	atomFeed.setEntries(entries);
+
         Document atomXml = new Atom10Generator().generate(atomFeed);
         
         // print JDOM-Document to System.out
